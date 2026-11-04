@@ -37,6 +37,8 @@
 <p>アプリは無料で、Google の広告 (Android アプリは AdMob、Web 版は AdSense) を表示します。<strong>パーソナライズしない広告だけ</strong>を求めており、利用者のプロフィールではなく表示中の内容などから選ばれます。広告の配信と効果測定 (表示回数の制限や不正防止を含む) のため、Google の SDK は広告 ID、IP アドレス、広告の操作などの端末の情報を収集します (<a href="https://policies.google.com/technologies/partner-sites">Google のサービスを使用するサイトやアプリから収集した情報の Google による使用</a>)。お薬や健康の記録を広告主に提供することはありません。法律で必要な地域 (EEA・英国など) では、先に同意をおたずねします。</p>
 <h2>バックアップファイル</h2>
 <p>設定の「バックアップ」で、記録をファイルに書き出せます。ファイルはパスワードで暗号化でき、保存先 (端末、Google ドライブなど) は利用者が選びます。私たちがこのファイルを受け取ることはありません。</p>
+<h2>Google ドライブ同期 (任意)</h2>
+<p>設定の「Google ドライブ同期」をオンにすると、Google アカウントでログインし、家族全員の記録 (お薬・健康記録・予定・リマインダーなど) と、削除した記録の一覧を、あなたの Google ドライブの「アプリ専用の隠しフォルダ」に 1 つのファイルとして保存します。ファイルはあなたが決めた同期用パスワードで暗号化 (AES-256) してから送るため、Google にも私たちにも中身は読めません。アプリが使う権限は、この隠しフォルダだけです (drive.appdata)。ドライブのほかのファイルは見えず、私たちのサーバーを通ることもありません。同期はアプリを開いたとき、開いている間は 1 時間ごと、記録を変えた少しあとに行い、他の端末の記録と合わせます (ある端末で削除した記録は、他の端末からも削除されます)。設定から同期をやめると、この端末のログインとパスワードを消します。ドライブのファイルは、Google ドライブの設定の「アプリの管理」から削除できます。</p>
 <h2>しないこと</h2>
 <p>上記の広告以外のアプリやサイトをまたいだ追跡、アクセス解析の SDK の利用、データの販売は行いません。</p>
 <h2>データの削除</h2>
@@ -65,6 +67,8 @@
 <p>The app is free and shows ads from Google (AdMob in the Android app, AdSense on the web). We request <strong>non-personalized ads only</strong>: ads are chosen from context, not from a profile of you. To serve and measure ads, including frequency capping and fraud prevention, Google's SDK collects device information such as your advertising ID, IP address and interactions with ads, as described in <a href="https://policies.google.com/technologies/partner-sites">How Google uses information from sites or apps that use its services</a>. Your medication and health records are never shared with advertisers. Where the law requires it (for example in the EEA and UK) you are asked for consent first.</p>
 <h2>Backup files</h2>
 <p>Settings → Backup exports your records to a file. You can encrypt it with a password and you choose where it is saved (your device, Google Drive and so on). We never receive this file.</p>
+<h2>Google Drive sync (optional)</h2>
+<p>If you turn on Settings → “Google Drive sync”, the app signs in with your Google account and saves your family’s records (medicines, health records, appointments, reminders and so on), and the list of records you deleted, as one file in a hidden folder of your Google Drive that only this app can use. The file is encrypted (AES-256) with a sync password you choose before it leaves your device, so neither Google nor we can read it. The app asks only for access to that hidden folder (drive.appdata): it cannot see your other files, and nothing passes through our servers. It syncs when you open the app, every hour while it is open and shortly after you change something, combining the records of your devices (a record deleted on one device is deleted on the others too). Stopping sync in Settings removes the sign-in and the password from this device. You can delete the file in Google Drive’s settings under “Manage apps”.</p>
 <h2>What we do not do</h2>
 <p>No tracking across apps or websites beyond the advertising described above, no analytics SDKs, and we never sell your data.</p>
 <h2>Deleting your data</h2>
@@ -93,6 +97,8 @@
 <p>Ứng dụng miễn phí và hiển thị quảng cáo của Google (AdMob trên ứng dụng Android, AdSense trên bản web). Chúng tôi chỉ yêu cầu <strong>quảng cáo không cá nhân hóa</strong>: quảng cáo được chọn theo ngữ cảnh, không dựa trên hồ sơ về bạn. Để phân phát và đo lường quảng cáo, kể cả giới hạn tần suất và chống gian lận, SDK của Google thu thập thông tin thiết bị như mã nhận dạng quảng cáo, địa chỉ IP và tương tác với quảng cáo, như mô tả tại <a href="https://policies.google.com/technologies/partner-sites">Cách Google sử dụng thông tin từ các trang web hoặc ứng dụng sử dụng dịch vụ của Google</a>. Hồ sơ thuốc và sức khỏe của bạn không bao giờ được chia sẻ với nhà quảng cáo. Ở nơi pháp luật yêu cầu (ví dụ EEA và Vương quốc Anh), bạn sẽ được hỏi ý kiến đồng ý trước.</p>
 <h2>File sao lưu</h2>
 <p>Cài đặt → Sao lưu xuất hồ sơ ra file. Bạn có thể mã hóa file bằng mật khẩu và tự chọn nơi lưu (thiết bị, Google Drive…). Chúng tôi không bao giờ nhận được file này.</p>
+<h2>Đồng bộ Google Drive (không bắt buộc)</h2>
+<p>Nếu bạn bật Cài đặt → “Đồng bộ Google Drive”, ứng dụng đăng nhập bằng tài khoản Google của bạn và lưu hồ sơ của cả gia đình (thuốc, sổ sức khỏe, lịch hẹn, lời nhắc…) cùng danh sách các bản ghi đã xóa thành một file trong thư mục ẩn trên Google Drive của bạn, chỉ ứng dụng này dùng được. File được mã hóa (AES-256) bằng mật khẩu đồng bộ do bạn đặt trước khi rời khỏi thiết bị, nên cả Google lẫn chúng tôi đều không đọc được. Ứng dụng chỉ xin quyền vào thư mục ẩn đó (drive.appdata): không thấy các file khác của bạn, và không có gì đi qua máy chủ của chúng tôi. Ứng dụng đồng bộ khi mở, mỗi giờ khi đang mở và ít lâu sau khi bạn thay đổi dữ liệu, gộp hồ sơ giữa các thiết bị (bản ghi xóa trên một thiết bị cũng bị xóa trên các thiết bị khác). Tắt đồng bộ trong Cài đặt sẽ xóa đăng nhập và mật khẩu khỏi thiết bị này. Bạn có thể xóa file trong phần “Quản lý ứng dụng” của cài đặt Google Drive.</p>
 <h2>Những điều chúng tôi không làm</h2>
 <p>Không theo dõi bạn qua các ứng dụng hay trang web khác ngoài phần quảng cáo nêu trên, không dùng SDK phân tích, và không bao giờ bán dữ liệu của bạn.</p>
 <h2>Xóa dữ liệu</h2>
