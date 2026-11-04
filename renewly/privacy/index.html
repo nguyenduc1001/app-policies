@@ -31,6 +31,8 @@
 <p>Camera and photo library access is used only when you choose to attach a photo of a document.</p>
 <h2>Exchange rates and weather</h2>
 <p>To show exchange rates, the app downloads public rate tables (currency-api via jsDelivr or Cloudflare Pages). To show the weather, it sends the coordinates of the two cities you chose, or the default ones, to Open-Meteo. Nothing about you or your documents is sent, and no account is used.</p>
+<h2>Rate and disaster alerts (optional)</h2>
+<p>If you turn on alerts, the app checks in the background from time to time. The rate alert downloads the same public rate tables as above. The disaster alert (Japan only) downloads public earthquake reports from P2PQuake (api.p2pquake.net) and weather warnings from the Japan Meteorological Agency (www.jma.go.jp), and compares them with the prefecture you chose on your device. Your prefecture, levels and documents are never sent; these services see only an ordinary request from your device (its IP address).</p>
 <h2>Advertising</h2>
 <p>The app is free and shows banner ads from Google AdMob. We request <strong>non-personalized ads only</strong>: ads are chosen from context, not from a profile of you, and the app does not ask to track you across other apps. To serve and measure ads, including frequency capping and fraud prevention, the Google Mobile Ads SDK collects device information such as your advertising ID, IP address and interactions with ads, as described in <a href="https://policies.google.com/technologies/partner-sites">How Google uses information from sites or apps that use its services</a>. Your documents, notes and photos are never shared with advertisers. Where the law requires it (for example in the EEA and UK) you are asked for consent first. You can reset or delete your advertising ID in your device settings.</p>
 <h2>Backup files</h2>
@@ -57,6 +59,8 @@
 <p>Quyền camera và thư viện ảnh chỉ được dùng khi bạn chọn đính kèm ảnh giấy tờ.</p>
 <h2>Tỷ giá và thời tiết</h2>
 <p>Để hiện tỷ giá, ứng dụng tải bảng tỷ giá công khai (currency-api qua jsDelivr hoặc Cloudflare Pages). Để hiện thời tiết, ứng dụng gửi tọa độ của hai thành phố bạn chọn (hoặc thành phố mặc định) tới Open-Meteo. Không có thông tin nào về bạn hay giấy tờ của bạn được gửi đi, và không cần tài khoản.</p>
+<h2>Cảnh báo tỷ giá và thiên tai (tùy chọn)</h2>
+<p>Nếu bạn bật cảnh báo, app thỉnh thoảng kiểm tra ngầm. Cảnh báo tỷ giá tải cùng bảng tỷ giá công khai nêu trên. Cảnh báo thiên tai (chỉ ở Nhật) tải tin động đất công khai từ P2PQuake (api.p2pquake.net) và cảnh báo thời tiết từ Cơ quan Khí tượng Nhật Bản (www.jma.go.jp), rồi so với tỉnh bạn chọn ngay trên máy. Tỉnh, mức tỷ giá và giấy tờ của bạn không bao giờ được gửi đi; các dịch vụ này chỉ thấy một yêu cầu bình thường từ thiết bị (địa chỉ IP).</p>
 <h2>Quảng cáo</h2>
 <p>Ứng dụng miễn phí và hiển thị quảng cáo banner của Google AdMob. Chúng tôi chỉ yêu cầu <strong>quảng cáo không cá nhân hóa</strong>: quảng cáo được chọn theo ngữ cảnh, không dựa trên hồ sơ về bạn, và ứng dụng không xin phép theo dõi bạn qua các ứng dụng khác. Để phân phát và đo lường quảng cáo, kể cả giới hạn tần suất và chống gian lận, Google Mobile Ads SDK thu thập thông tin thiết bị như mã nhận dạng quảng cáo, địa chỉ IP và tương tác với quảng cáo, như mô tả tại <a href="https://policies.google.com/technologies/partner-sites">Cách Google sử dụng thông tin từ các trang web hoặc ứng dụng sử dụng dịch vụ của Google</a>. Giấy tờ, ghi chú và ảnh của bạn không bao giờ được chia sẻ với nhà quảng cáo. Ở nơi pháp luật yêu cầu (ví dụ EEA và Vương quốc Anh), bạn sẽ được hỏi ý kiến đồng ý trước. Bạn có thể đặt lại hoặc xóa mã nhận dạng quảng cáo trong cài đặt thiết bị.</p>
 <h2>File sao lưu</h2>
@@ -83,6 +87,8 @@
 <p>カメラと写真ライブラリへのアクセスは、書類の写真を添付するときにのみ使用します。</p>
 <h2>為替レートと天気</h2>
 <p>為替レートを表示するため、公開されているレート表（jsDelivr または Cloudflare Pages 経由の currency-api）をダウンロードします。天気を表示するため、選んだ2つの都市（または既定の都市）の座標を Open-Meteo に送信します。あなた自身や書類に関する情報は送信せず、アカウントも使いません。</p>
+<h2>為替・災害のお知らせ（任意）</h2>
+<p>お知らせをオンにすると、アプリはときどきバックグラウンドで確認します。為替のお知らせは上記と同じ公開のレート表を取得します。災害のお知らせ（日本のみ）は、P2PQuake（api.p2pquake.net）の公開地震情報と気象庁（www.jma.go.jp）の気象警報を取得し、端末の中で選んだ都道府県と照らし合わせます。都道府県・設定した水準・書類の内容が送られることはなく、これらのサービスには端末からの通常のリクエスト（IP アドレス）だけが届きます。</p>
 <h2>広告</h2>
 <p>本アプリは無料で、Google AdMobのバナー広告を表示します。<strong>パーソナライズされていない広告のみ</strong>をリクエストしており、広告はあなたのプロフィールではなく内容に基づいて選ばれ、他のアプリをまたいだトラッキングの許可も求めません。広告の配信と効果測定（表示回数の制限や不正防止を含む）のため、Google Mobile Ads SDKが広告ID、IPアドレス、広告とのやり取りなどの端末情報を収集します。詳しくは<a href="https://policies.google.com/technologies/partner-sites">Googleのサービスを使用するサイトやアプリから収集した情報のGoogleによる使用</a>をご覧ください。書類の内容、メモ、写真が広告主に共有されることはありません。法律で求められる地域（EEA・英国など）では事前に同意を確認します。広告IDは端末の設定でリセット・削除できます。</p>
 <h2>バックアップファイル</h2>
