@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nearly-Đ</title>
+  <!-- The page behind a Nearly-Đ location link: who shared, where they are now, until when. -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    :root { --bg: #F4F7FF; --card: #FFFFFF; --text: #0F172A; --muted: #64748B; --green: #16A34A; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #0B1020; --card: #151B2E; --text: #E5E9F5; --muted: #94A0B8; } }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    #map { position: fixed; inset: 0; }
+    .card {
+      position: fixed; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 1000;
+      display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 22px;
+      background: var(--card); box-shadow: 0 8px 30px rgba(0, 0, 0, .18); max-width: 520px; margin: 0 auto;
+    }
+    .avatar { width: 48px; height: 48px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 800; background-size: cover; background-position: center; }
+    .name { font-weight: 800; font-size: 17px; }
+    .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .brand { margin-left: auto; color: var(--green); font-weight: 800; font-size: 13px; text-decoration: none; white-space: nowrap; }
+    .pin { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.3); background-size: cover; background-position: center; display: grid; place-items: center; color: #fff; font-weight: 800; }
+    .gone { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="card" id="card" hidden>
+    <div class="avatar" id="avatar"></div>
+    <div><div class="name" id="name"></div><div class="sub" id="sub"></div></div>
+    <a class="brand" href="https://play.google.com/store/apps/details?id=com.nearly.app">Nearly-Đ</a>
+  </div>
+  <div class="gone" id="gone" hidden><div><div style="font-size:48px">🔗</div><p id="goneText"></p></div></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Public values: the project URL and its publishable key (the database's rules do the guarding).
+    const SUPABASE_URL = 'https://zlzlhpdeuhsriynfgujc.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_kNnLvAdkeMsnrLO4HW456g_13tvK6pb';
+    const REFRESH_MS = 15000;
+
+    const lang = (navigator.language || 'vi').slice(0, 2);
+    const WORDS = {
+      vi: { updated: 'Cập nhật {ago}', until: 'xem được đến {time}', now: 'vừa xong', min: '{n} phút trước', gone: 'Link đã hết hạn hoặc người chia sẻ đang tạm dừng.', noFix: 'Chưa có vị trí' },
+      en: { updated: 'Updated {ago}', until: 'visible until {time}', now: 'just now', min: '{n} min ago', gone: 'This link has expired, or sharing is paused.', noFix: 'No position yet' },
+      ja: { updated: '{ago}に更新', until: '{time}まで表示', now: 'たった今', min: '{n}分前', gone: 'リンクの期限が切れたか、共有が一時停止中です。', noFix: '位置情報がまだありません' },
+    };
+    const w = WORDS[lang] || WORDS.vi;
+    document.documentElement.lang = WORDS[lang] ? lang : 'vi';
+    const fill = (s, v) => s.replace(/\{(\w+)\}/g, (_, k) => v[k]);
+    const clock = (iso) => new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const ago = (iso) => { const n = Math.round((Date.now() - new Date(iso)) / 60000); return n < 1 ? w.now : fill(w.min, { n }); };
+    const initials = (name) => name.trim().split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+
+    const token = location.hash.slice(1);
+    const map = L.map('map', { zoomControl: false }).setView([21.0285, 105.8542], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+    let marker = null;
+    let circle = null;
+
+    function gone() {
+      document.getElementById('card').hidden = true;
+      document.getElementById('gone').hidden = false;
+      document.getElementById('goneText').textContent = w.gone;
+    }
+
+    async function load() {
+      if (!token) return gone();
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/shared_location`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ t: token }),
+      });
+      const rows = res.ok ? await res.json() : [];
+      const p = rows[0];
+      if (!p) return gone();
+
+      const face = (el) => {
+        el.style.backgroundColor = p.color || '#16A34A';
+        if (p.avatar_url) { el.style.backgroundImage = `url("${p.avatar_url}")`; el.textContent = ''; } else el.textContent = initials(p.name || '?');
+      };
+      document.getElementById('card').hidden = false;
+      document.getElementById('name').textContent = p.name;
+      face(document.getElementById('avatar'));
+      const parts = [p.updated_at && p.lat !== null ? fill(w.updated, { ago: ago(p.updated_at) }) : w.noFix, fill(w.until, { time: clock(p.expires_at) })];
+      if (p.battery !== null) parts.push(`🔋 ${p.battery}%`);
+      document.getElementById('sub').textContent = parts.join(' · ');
+
+      if (p.lat === null) return;
+      const at = [p.lat, p.lon];
+      if (!marker) {
+        const el = document.createElement('div');
+        el.className = 'pin';
+        face(el);
+        marker = L.marker(at, { icon: L.divIcon({ html: el.outerHTML, className: '', iconSize: [44, 44], iconAnchor: [22, 22] }) }).addTo(map);
+        circle = L.circle(at, { radius: p.accuracy || 30, color: '#16A34A', weight: 1, fillOpacity: 0.12 }).addTo(map);
+        map.setView(at, 16);
+      } else {
+        marker.setLatLng(at);
+        circle.setLatLng(at).setRadius(p.accuracy || 30);
+      }
+    }
+
+    load().catch(gone);
+    setInterval(() => load().catch(() => {}), REFRESH_MS);
+  </script>
+</body>
+</html>
