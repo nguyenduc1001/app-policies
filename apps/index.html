@@ -149,6 +149,15 @@
     card.appendChild(stores);
     list.appendChild(card);
   });
+
+  // Nhúng trong app: báo chiều cao cho trang mẹ để iframe tự co giãn, không có thanh cuộn riêng
+  if (qs.get("embed") === "1" && window.parent !== window) {
+    var sendH = function () { window.parent.postMessage({ hometasteApps: document.body.scrollHeight }, "*"); };
+    sendH();
+    setTimeout(sendH, 300);
+    window.addEventListener("load", sendH);
+    window.addEventListener("resize", sendH);
+  }
 })();
 </script>
 </body>
