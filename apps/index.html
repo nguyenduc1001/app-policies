@@ -163,9 +163,13 @@
     list.appendChild(card);
   });
 
-  // Nhúng trong app: báo chiều cao cho trang mẹ để iframe tự co giãn, không có thanh cuộn riêng
-  if (qs.get("embed") === "1" && window.parent !== window) {
-    var sendH = function () { window.parent.postMessage({ hometasteApps: document.body.scrollHeight }, "*"); };
+  // Nhúng: báo chiều cao cho trang mẹ (iframe) hoặc app native (React Native WebView) để khung tự co giãn
+  if (qs.get("embed") === "1") {
+    var sendH = function () {
+      var h = document.body.scrollHeight;
+      if (window.parent !== window) window.parent.postMessage({ hometasteApps: h }, "*");
+      if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ hometasteApps: h }));
+    };
     sendH();
     setTimeout(sendH, 300);
     window.addEventListener("load", sendH);
