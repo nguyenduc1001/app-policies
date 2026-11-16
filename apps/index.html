@@ -81,6 +81,17 @@
       ],
     },
     {
+      id: "phr", icon: "img/phr.png", name: "お薬手帳 PHR",
+      tagline: {
+        vi: "Sổ tay thuốc cá nhân: quản lý đơn thuốc, lịch uống thuốc và sức khỏe.",
+        en: "Personal medication notebook: prescriptions, dose schedule and health records.",
+        ja: "お薬手帳アプリ。処方・服用スケジュール・健康記録をひとつに。",
+      },
+      stores: [
+        { key: "play", name: "Google Play", qr: "qr/ph-play.svg", url: "https://play.google.com/store/apps/details?id=jp.phr.okusuri" },
+      ],
+    },
+    {
       id: "renewly", icon: "img/renewly.png", name: "Renewly-Đ",
       tagline: {
         vi: "Nhắc hạn visa, thẻ cư trú, bằng lái, shaken và các việc định kỳ tại Nhật.",
@@ -114,8 +125,10 @@
     }
   }
 
+  // ?hide=<id>: trang nhúng trong app nào thì giấu chính app đó đi
+  var hide = (qs.get("hide") || "").split(",");
   var list = document.getElementById("list");
-  APPS.forEach(function (app) {
+  APPS.filter(function (app) { return hide.indexOf(app.id) < 0; }).forEach(function (app) {
     var card = document.createElement("section");
     card.className = "app";
     var head = document.createElement("div");
