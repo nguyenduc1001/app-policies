@@ -34,6 +34,8 @@
   .store .soonTag { display: block; font-size: 11px; color: var(--muted); }
   .copy { margin-top: 7px; font: inherit; font-size: 12px; font-weight: 600; color: var(--accent); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; cursor: pointer; }
   .copy:active { opacity: .6; }
+  .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+  .actions .copy { margin-top: 0; }
 </style>
 </head>
 <body>
@@ -56,6 +58,7 @@
     title: { vi: "Ứng dụng của chúng tôi", en: "Our apps", ja: "アプリ一覧" },
     copy: { vi: "Chép link", en: "Copy link", ja: "リンクをコピー" },
     copied: { vi: "Đã chép ✓", en: "Copied ✓", ja: "コピー済み ✓" },
+    share: { vi: "Chia sẻ", en: "Share", ja: "シェア" },
     soon: { vi: "Sắp có", en: "Coming soon", ja: "近日公開" },
     web: { vi: "Trang web", en: "Website", ja: "ウェブサイト" },
   };
@@ -143,6 +146,15 @@
     el.addEventListener("click", function (e) { e.preventDefault(); openStore(url); });
   }
 
+  // Chia sẻ với bạn bè: trong app nhờ app chủ mở bảng chia sẻ gốc; trình duyệt dùng Web Share; không có thì chép link
+  function shareLink(text, url, btn) {
+    var message = text + "\n" + url;
+    if (embedded && window.ReactNativeWebView) { window.ReactNativeWebView.postMessage(JSON.stringify({ shareText: message })); return; }
+    if (embedded && window.parent !== window) { window.parent.postMessage({ hometasteShare: message }, "*"); return; }
+    if (navigator.share) { navigator.share({ text: text, url: url }).catch(function () {}); return; }
+    copyText(message, btn);
+  }
+
   // ?hide=<id>: trang nhúng trong app nào thì giấu chính app đó đi
   var hide = (qs.get("hide") || "").split(",");
   var list = document.getElementById("list");
@@ -175,10 +187,16 @@
         tag.className = "soonTag"; tag.textContent = UI.soon[lang];
         body.appendChild(tag);
       }
+      var actions = document.createElement("div");
+      actions.className = "actions";
       var btn = document.createElement("button");
       btn.className = "copy"; btn.type = "button"; btn.textContent = UI.copy[lang];
       btn.addEventListener("click", function () { copyText(st.url, btn); });
-      body.appendChild(btn);
+      var sh = document.createElement("button");
+      sh.className = "copy"; sh.type = "button"; sh.textContent = UI.share[lang];
+      sh.addEventListener("click", function () { shareLink(app.name + " — " + app.tagline[lang], st.url, sh); });
+      actions.appendChild(sh); actions.appendChild(btn);
+      body.appendChild(actions);
       box.appendChild(a); box.appendChild(body);
       stores.appendChild(box);
     });
