@@ -16,7 +16,8 @@
   body.embed .app:first-child { margin-top: 0; }
   h1 { font-size: 26px; margin: 0 0 4px; }
   .meta { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
-  .app { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; margin: 14px 0; }
+  /* Mỗi app: không nền, chỉ kẻ viền trên và dưới (không viền trái phải, không bo góc) */
+  .app { background: none; border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0; padding: 18px 16px; margin: 14px 0; }
   .head { display: flex; align-items: center; gap: 14px; }
   .head img { width: 64px; height: 64px; border-radius: 15px; border: 1px solid var(--line); }
   .head h2 { font-size: 19px; margin: 0; line-height: 1.3; }
