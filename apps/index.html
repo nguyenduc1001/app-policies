@@ -208,15 +208,22 @@
 
   // Nhúng: báo chiều cao cho trang mẹ (iframe) hoặc app native (React Native WebView) để khung tự co giãn
   if (qs.get("embed") === "1") {
+    // Báo cả khi nội dung đổi cao sau đó (ảnh, phông chữ tải xong), để khung luôn hiện hết danh sách, không phải cuộn
+    var lastH = 0;
     var sendH = function () {
-      var h = document.body.scrollHeight;
+      var h = Math.ceil(Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.getBoundingClientRect().height));
+      if (h === lastH) return;
+      lastH = h;
       if (window.parent !== window) window.parent.postMessage({ hometasteApps: h }, "*");
       if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ hometasteApps: h }));
     };
     sendH();
     setTimeout(sendH, 300);
+    setTimeout(sendH, 1500);
     window.addEventListener("load", sendH);
     window.addEventListener("resize", sendH);
+    if (window.ResizeObserver) new ResizeObserver(sendH).observe(document.body);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sendH);
   }
 })();
 </script>
