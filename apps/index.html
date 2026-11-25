@@ -211,7 +211,10 @@
     // Báo cả khi nội dung đổi cao sau đó (ảnh, phông chữ tải xong), để khung luôn hiện hết danh sách, không phải cuộn
     var lastH = 0;
     var sendH = function () {
-      var h = Math.ceil(Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.getBoundingClientRect().height));
+      // Chiều cao của chính nội dung (main), không đo cả trang: trang không bao giờ thấp hơn khung chứa nó,
+      // nên đo trang thì khung chỉ có thể dài thêm (mỗi lần +8px), không co lại, để thừa khoảng trống dưới app cuối
+      var box = document.querySelector("main") || document.body;
+      var h = Math.ceil(box.getBoundingClientRect().height);
       if (h === lastH) return;
       lastH = h;
       if (window.parent !== window) window.parent.postMessage({ hometasteApps: h }, "*");
@@ -222,7 +225,7 @@
     setTimeout(sendH, 1500);
     window.addEventListener("load", sendH);
     window.addEventListener("resize", sendH);
-    if (window.ResizeObserver) new ResizeObserver(sendH).observe(document.body);
+    if (window.ResizeObserver) new ResizeObserver(sendH).observe(document.querySelector("main") || document.body);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sendH);
   }
 })();
